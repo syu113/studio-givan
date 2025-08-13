@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Portfolio - SPA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: #fff;
+      color: #111;
+      padding: 0 40px;
+    }
+    .header-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 32px 0 0 0;
+    }
+    .logo {
+      font-size: 2.2rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    .sns-icons {
+      display: flex;
+      gap: 16px;
+      margin-top: 4px;
+    }
+    .sns-icons a {
+      color: #222;
+      font-size: 1.3rem;
+      transition: color 0.2s;
+    }
+    .sns-icons a:hover {
+      color: #888;
+    }
+    .header-line {
+      border: none;
+      border-bottom: 2px solid #ddd;
+      margin: 8px 0 0 0;
+      width: 100%;
+    }
+    .main {
+      max-width: 1200px;
+      margin: 40px auto 80px auto;
+      padding: 0 12px;
+    }
+    .page-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .portfolio-filter {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 8px 16px;
+      border: 2px solid #ddd;
+      background: #fff;
+      color: #666;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: #111;
+      color: #fff;
+      border-color: #111;
+    }
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 80px;
+    }
+    .project-card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      opacity: 1;
+      transform: scale(1);
+    }
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    }
+    .project-card.hidden {
+      opacity: 0;
+      transform: scale(0.8);
+      pointer-events: none;
+    }
+    .project-image {
+      width: 100%;
+      height: 250px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+    .project-image::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.3);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .project-card:hover .project-image::after {
+      opacity: 1;
+    }
+    .project-info {
+      padding: 20px;
+    }
+    .project-title {
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #111;
+    }
+    .project-category {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .project-description {
+      color: #888;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .project-tag {
+      background: #f0f0f0;
+      color: #666;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    .loading {
+      text-align: center;
+      padding: 60px 20px;
+      color: #666;
+      font-size: 1.1rem;
+    }
+    .loading::after {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #ddd;
+      border-top: 2px solid #666;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-left: 10px;
+    }
+    .error-message {
+      text-align: center;
+      padding: 60px 20px;
+      color: #e74c3c;
+      font-size: 1.1rem;
+      background: #fdf2f2;
+      border: 1px solid #fecaca;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    .error-message button {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 15px;
+      font-size: 0.9rem;
+    }
+    .error-message button:hover {
+      background: #c0392b;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      color: #888;
+      font-size: 1.1rem;
+    }
+    .empty-state i {
+      font-size: 3rem;
+      color: #ddd;
+      margin-bottom: 20px;
+      display: block;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .footer {
+      background: #111;
+      color: #fff;
+      font-size: 0.95rem;
+      width: 100%;
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      z-index: 10;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .footer-marquee {
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+    .footer-marquee span {
+      display: inline-block;
+      padding-left: 100%;
+      animation: marquee 12s linear infinite;
+      font-weight: bold;
+      color: #FFD600;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+    @media (max-width: 900px) {
+      body {
+        padding: 0 20px;
+      }
+      .main {
+        padding: 0 2px;
+      }
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+      .portfolio-filter {
+        gap: 10px;
+      }
+      .filter-btn {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header-wrap">
+    <nav class="header" aria-label="메인 네비게이션">
+      <div class="logo"><img src="util/logo.png" style="width: 200px; height: 50px;"></div>
+      <div class="sns-icons">
+        <a href="#" title="Home"><img src="util/2.png" style="width: 48px; height: 48px;" alt="Home"></a>
+        <a href="#" title="About"><img src="util/3.png" style="width: 48px; height: 48px;" alt="About"></a>
+        <a href="#" title="Works"><img src="util/4.png" style="width: 48px; height: 48px;" alt="Works"></a>
+        <a href="#" title="인스타그램"><img src="util/5.png" style="width: 48px; height: 48px;" alt="인스타그램"></a>
+      </div>
+    </nav>
+    <hr class="header-line">
+  </div>
+  
+  <div class="main">
+    <div class="page-title" id="pageTitle">포트폴리오</div>
+    
+    <!-- 필터 버튼 -->
+    <div class="portfolio-filter" id="portfolioFilter">
+      <div class="loading">프로젝트를 불러오는 중...</div>
+    </div>
+    
+    <!-- 프로젝트 그리드 -->
+    <div class="content-grid" id="contentGrid">
+      <!-- 동적으로 생성될 프로젝트 카드들 -->
+    </div>
+  </div>
+  
+  <div class="footer">
+    <div class="footer-marquee">
+      <span>DESIGN AGENCY · 2023 DESIGN STUDIO © GIVAN ALL RIGHTS RESERVED · DESIGN AGENCY · 2023 DESIGN STUDIO © GIVAN ALL RIGHTS RESERVED ·</span>
+    </div>
+  </div>
+
+  <script>
+    // 포트폴리오 데이터를 외부 JSON 파일에서 로드
+
+    // 데이터 로더 클래스
+    class DataLoader {
+      static async loadPortfolioData() {
+        try {
+          const response = await fetch('portfolio-data.json');
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const data = await response.json();
+          
+          // 데이터 유효성 검사
+          if (!data.projects || !Array.isArray(data.projects)) {
+            throw new Error('Invalid data format: projects array is missing');
+          }
+          
+          // 카테고리 자동 업데이트
+          if (data.settings && data.settings.autoUpdateCategories) {
+            data.categories = this.generateCategories(data.projects);
+          }
+          
+          return data;
+        } catch (error) {
+          console.error('포트폴리오 데이터 로드 실패:', error);
+          throw error; // 에러를 다시 던져서 UI에서 처리할 수 있도록 함
+        }
+      }
+
+      static generateCategories(projects) {
+        const categoryMap = new Map();
+        
+        // 프로젝트에서 카테고리 추출
+        projects.forEach(project => {
+          const category = project.category;
+          categoryMap.set(category, (categoryMap.get(category) || 0) + 1);
+        });
+
+        // 카테고리 배열 생성
+        const categories = [
+          { id: "all", name: "전체", count: projects.length }
+        ];
+
+        const categoryNames = {
+          web: "웹 개발",
+          mobile: "모바일",
+          branding: "브랜딩",
+          video: "영상",
+          design: "디자인"
+        };
+
+        categoryMap.forEach((count, id) => {
+          categories.push({
+            id,
+            name: categoryNames[id] || id.charAt(0).toUpperCase() + id.slice(1),
+            count
+          });
+        });
+
+        return categories;
+      }
+    }
+
+    // SPA 클래스
+    class PortfolioSPA {
+      constructor() {
+        this.data = null;
+        this.currentFilter = 'all';
+        this.isLoading = true;
+        this.init();
+      }
+
+      async init() {
+        this.showLoading();
+        try {
+          this.data = await DataLoader.loadPortfolioData();
+          this.isLoading = false;
+          this.updatePageTitle();
+          this.renderFilters();
+          this.renderProjects();
+          this.bindEvents();
+        } catch (error) {
+          this.isLoading = false;
+          this.showError(error);
+        }
+      }
+
+      showLoading() {
+        const filterContainer = document.getElementById('portfolioFilter');
+        const gridContainer = document.getElementById('contentGrid');
+        
+        filterContainer.innerHTML = '<div class="loading">데이터를 불러오는 중...</div>';
+        gridContainer.innerHTML = '';
+      }
+
+      showError(error) {
+        const filterContainer = document.getElementById('portfolioFilter');
+        const gridContainer = document.getElementById('contentGrid');
+        
+        const errorMessage = `
+          <div class="error-message">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div>데이터를 불러오는 중 오류가 발생했습니다.</div>
+            <div style="font-size: 0.9rem; margin-top: 10px; color: #666;">
+              ${error.message}
+            </div>
+            <button onclick="window.reloadPortfolioData()">다시 시도</button>
+          </div>
+        `;
+        
+        filterContainer.innerHTML = errorMessage;
+        gridContainer.innerHTML = '';
+      }
+
+      showEmptyState() {
+        const gridContainer = document.getElementById('contentGrid');
+        gridContainer.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-folder-open"></i>
+            <div>표시할 프로젝트가 없습니다.</div>
+          </div>
+        `;
+      }
+
+      updatePageTitle() {
+        document.getElementById('pageTitle').textContent = this.data.title;
+      }
+
+      renderFilters() {
+        const filterContainer = document.getElementById('portfolioFilter');
+        const filtersHTML = this.data.categories.map(category => 
+          `<button class="filter-btn ${category.id === 'all' ? 'active' : ''}" 
+                   data-filter="${category.id}">
+             ${category.name} (${category.count})
+           </button>`
+        ).join('');
+        
+        filterContainer.innerHTML = filtersHTML;
+      }
+
+      renderProjects(filter = 'all') {
+        const gridContainer = document.getElementById('contentGrid');
+        const filteredProjects = filter === 'all' 
+          ? this.data.projects 
+          : this.data.projects.filter(project => project.category === filter);
+
+        // 빈 상태 처리
+        if (filteredProjects.length === 0) {
+          this.showEmptyState();
+          return;
+        }
+
+        const projectsHTML = filteredProjects.map(project => 
+          `<div class="project-card" data-category="${project.category}" data-id="${project.id}">
+             <div class="project-image" style="background-image: url('${project.image}')"></div>
+             <div class="project-info">
+               <div class="project-title">${project.title}</div>
+               <div class="project-category">${this.getCategoryName(project.category)}</div>
+               <div class="project-description">${project.description}</div>
+               <div class="project-tags">
+                 ${project.tags.map(tag => `<span class="project-tag">${tag}</span>`).join('')}
+               </div>
+             </div>
+           </div>`
+        ).join('');
+
+        gridContainer.innerHTML = projectsHTML;
+        
+        // 애니메이션 효과
+        setTimeout(() => {
+          const cards = gridContainer.querySelectorAll('.project-card');
+          cards.forEach((card, index) => {
+            setTimeout(() => {
+              card.style.opacity = '1';
+              card.style.transform = 'translateY(0)';
+            }, index * 100);
+          });
+        }, 50);
+      }
+
+      getCategoryName(categoryId) {
+        const category = this.data.categories.find(cat => cat.id === categoryId);
+        return category ? category.name : categoryId;
+      }
+
+      filterProjects(category) {
+        this.currentFilter = category;
+        
+        // 필터 버튼 활성화 상태 변경
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+          btn.classList.remove('active');
+          if (btn.dataset.filter === category) {
+            btn.classList.add('active');
+          }
+        });
+
+        // 프로젝트 필터링 애니메이션
+        const cards = document.querySelectorAll('.project-card');
+        cards.forEach(card => {
+          if (category === 'all' || card.dataset.category === category) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      }
+
+      bindEvents() {
+        // 필터 버튼 이벤트
+        document.getElementById('portfolioFilter').addEventListener('click', (e) => {
+          if (e.target.classList.contains('filter-btn')) {
+            const filter = e.target.dataset.filter;
+            this.filterProjects(filter);
+          }
+        });
+
+        // 프로젝트 카드 클릭 이벤트
+        document.getElementById('contentGrid').addEventListener('click', (e) => {
+          const card = e.target.closest('.project-card');
+          if (card) {
+            const projectId = parseInt(card.dataset.id);
+            const project = this.data.projects.find(p => p.id === projectId);
+            if (project) {
+              this.showProjectDetail(project);
+            }
+          }
+        });
+      }
+
+      showProjectDetail(project) {
+        // 프로젝트 상세 정보를 콘솔에 출력 (나중에 모달로 확장 가능)
+        console.log('프로젝트 상세 정보:', project);
+        
+        const details = [
+          `제목: ${project.title}`,
+          `카테고리: ${this.getCategoryName(project.category)}`,
+          `설명: ${project.description}`,
+          `기술 스택: ${project.tags.join(', ')}`,
+          `제작 연도: ${project.year}`,
+          project.client ? `클라이언트: ${project.client}` : '',
+          project.duration ? `제작 기간: ${project.duration}` : '',
+          project.url ? `URL: ${project.url}` : ''
+        ].filter(Boolean).join('\n');
+        
+        alert(details);
+      }
+
+      // 데이터 업데이트 메소드
+      updateData(newData) {
+        this.data = { ...this.data, ...newData };
+        this.renderFilters();
+        this.renderProjects(this.currentFilter);
+      }
+
+      // 프로젝트 추가 메소드
+      addProject(project) {
+        this.data.projects.push({ ...project, id: Date.now() });
+        this.updateCategoryCounts();
+        this.renderFilters();
+        this.renderProjects(this.currentFilter);
+      }
+
+      updateCategoryCounts() {
+        this.data.categories.forEach(category => {
+          if (category.id === 'all') {
+            category.count = this.data.projects.length;
+          } else {
+            category.count = this.data.projects.filter(p => p.category === category.id).length;
+          }
+        });
+      }
+    }
+
+    // 앱 초기화
+    document.addEventListener('DOMContentLoaded', () => {
+      window.portfolioApp = new PortfolioSPA();
+      
+      // 전역 함수로 데이터 업데이트 가능하게 함
+      window.updatePortfolio = (newData) => {
+        if (window.portfolioApp && window.portfolioApp.data) {
+          window.portfolioApp.updateData(newData);
+        }
+      };
+      
+      window.addProject = (project) => {
+        if (window.portfolioApp && window.portfolioApp.data) {
+          window.portfolioApp.addProject(project);
+        }
+      };
+
+      // JSON 데이터 다시 로드하는 함수
+      window.reloadPortfolioData = async () => {
+        if (window.portfolioApp) {
+          window.portfolioApp.showLoading();
+          try {
+            window.portfolioApp.data = await DataLoader.loadPortfolioData();
+            window.portfolioApp.updatePageTitle();
+            window.portfolioApp.renderFilters();
+            window.portfolioApp.renderProjects();
+          } catch (error) {
+            window.portfolioApp.showError(error);
+          }
+        }
+      };
+    });
+
+    // 초기 카드 스타일 설정
+    document.addEventListener('DOMContentLoaded', () => {
+      const style = document.createElement('style');
+      style.textContent = `
+        .project-card {
+          opacity: 0;
+          transform: translateY(20px);
+          transition: all 0.3s ease;
+        }
+      `;
+      document.head.appendChild(style);
+    });
+  </script>
+</body>
+</html>

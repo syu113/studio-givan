@@ -1,0 +1,113 @@
+{
+  "title": "프로젝트 포트폴리오",
+  "projects": [
+    {
+      "id": 1,
+      "title": "반응형 웹사이트 리뉴얼",
+      "category": "web",
+      "description": "기존 웹사이트를 모던한 디자인으로 리뉴얼하고 반응형 레이아웃을 적용했습니다.",
+      "image": "HOME/2-8.png",
+      "tags": ["HTML5", "CSS3", "JavaScript", "Responsive"],
+      "year": 2023,
+      "client": "ABC Company",
+      "duration": "3개월",
+      "url": "detail.html"
+    },
+    {
+      "id": 2,
+      "title": "모바일 앱 UI/UX 디자인",
+      "category": "mobile",
+      "description": "사용자 경험을 중심으로 한 직관적인 모바일 앱 인터페이스를 디자인했습니다.",
+      "image": "HOME/2-9.png",
+      "tags": ["UI/UX", "Mobile", "Figma", "Prototype"],
+      "year": 2023,
+      "client": "StartUp XYZ",
+      "duration": "2개월",
+      "url": "detail.html"
+    },
+    {
+      "id": 3,
+      "title": "브랜드 아이덴티티 디자인",
+      "category": "branding",
+      "description": "새로운 브랜드의 로고, 컬러, 타이포그래피 등 전체적인 아이덴티티를 구축했습니다.",
+      "image": "HOME/2-10.png",
+      "tags": ["Branding", "Logo", "Identity", "Adobe"],
+      "year": 2023,
+      "client": "Brand Studio",
+      "duration": "1개월",
+      "url": "detail.html"
+    },
+    {
+      "id": 4,
+      "title": "전자상거래 플랫폼 개발",
+      "category": "web",
+      "description": "사용자 친화적인 온라인 쇼핑몰을 구축하고 결제 시스템을 통합했습니다.",
+      "image": "WORKS/4-2.png",
+      "tags": ["E-commerce", "React", "Node.js", "Payment"],
+      "year": 2022,
+      "client": "Shopping Mall Co.",
+      "duration": "6개월",
+      "url": "https://shop-example.com"
+    },
+    {
+      "id": 5,
+      "title": "기업 홍보 영상 제작",
+      "category": "video",
+      "description": "브랜드 스토리텔링을 통한 감성적인 기업 홍보 영상을 기획하고 제작했습니다.",
+      "image": "WORKS/4-3.png",
+      "tags": ["Video", "Motion", "Storytelling", "After Effects"],
+      "year": 2022,
+      "client": "Corporate Inc.",
+      "duration": "2개월",
+      "url": "https://video-example.com"
+    },
+    {
+      "id": 6,
+      "title": "데이터 시각화 대시보드",
+      "category": "web",
+      "description": "복잡한 데이터를 직관적으로 표현하는 인터랙티브 대시보드를 개발했습니다.",
+      "image": "WORKS/4-4.png",
+      "tags": ["Data Visualization", "D3.js", "Dashboard", "Analytics"],
+      "year": 2022,
+      "client": "Data Corp.",
+      "duration": "4개월",
+      "url": "https://dashboard-example.com"
+    },
+    {
+      "id": 7,
+      "title": "반응형 블로그 플랫폼",
+      "category": "web",
+      "description": "개인 및 기업을 위한 커스터마이징 가능한 블로그 플랫폼을 개발했습니다.",
+      "image": "WORKS/4-5.png",
+      "tags": ["Blog", "CMS", "Responsive", "SEO"],
+      "year": 2023,
+      "client": "Blog Service",
+      "duration": "3개월",
+      "url": "https://blog-example.com"
+    },
+    {
+      "id": 8,
+      "title": "소셜 미디어 앱 디자인",
+      "category": "mobile",
+      "description": "젊은 세대를 타겟으로 한 새로운 소셜 미디어 앱의 전체 UI/UX를 디자인했습니다.",
+      "image": "WORKS/4-6.png",
+      "tags": ["Social Media", "Mobile App", "UI/UX", "React Native"],
+      "year": 2023,
+      "client": "Social Tech",
+      "duration": "4개월",
+      "url": "https://social-example.com"
+    }
+  ],
+  "categories": [
+    { "id": "all", "name": "전체", "count": 8 },
+    { "id": "web", "name": "웹 개발", "count": 4 },
+    { "id": "mobile", "name": "모바일", "count": 2 },
+    { "id": "branding", "name": "브랜딩", "count": 1 },
+    { "id": "video", "name": "영상", "count": 1 }
+  ],
+  "settings": {
+    "itemsPerPage": 6,
+    "animationDuration": 300,
+    "autoUpdateCategories": true
+  }
+}
